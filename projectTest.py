@@ -1,4 +1,5 @@
 import pandas as pd
+from displayfunction import display
 from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
@@ -52,3 +53,8 @@ print(rfc.score(X_test, y_test))
 df["Arrive or Depart Prediction"] = rfc.predict(X)
 print(df["Arrive or Depart Prediction"])
 # df.sample(15, random_state=22)
+
+rfc_imp = pd.DataFrame(rfc.feature_importances_, columns=['Importance'])
+rfc_imp["Importance"] = rfc_imp["Importance"]*100
+rfc_imp= rfc_imp.set_index([df.columns.drop(["Arrive or Depart", "Schedule", "Flight Number", "Arrive or Depart Prediction"])])
+display(rfc_imp.sort_values(by="Importance", ascending=False))
